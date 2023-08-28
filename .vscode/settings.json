@@ -15,4 +15,10 @@
         "editor.rulers": [80],
     },
     "files.eol": "\n",
+    "cSpell.words": [
+        "artefacts",
+        "Batchelder",
+        "gmtime",
+        "HOWTO"
+    ],
 }

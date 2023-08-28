@@ -8,6 +8,11 @@
       - [A note about markdown](#a-note-about-markdown)
     - [In-line comments](#in-line-comments)
       - [In-line TODOs](#in-line-todos)
+    - [Logging](#logging)
+      - [Lower-case messages](#lower-case-messages)
+      - [Error-artefacts](#error-artefacts)
+      - [Communicating with users](#communicating-with-users)
+      - [Secrets](#secrets)
     - [Comments and communication](#comments-and-communication)
       - [Tips for communication outside of code](#tips-for-communication-outside-of-code)
     - [Variables and variable naming](#variables-and-variable-naming)
@@ -138,9 +143,107 @@ team, i.e. not just those looking at code, and planned alongside the rest of the
 work on the code-base. A TODO may also be surfaced in a pull-request, this way
 it can be discussed as part of the same body of work.
 
+### Logging
+
+Logging should be configured consistently across a product family's
+code-base unless there is a specific need for another specific style of
+logging for a specific product.
+
+A suggested configuration for Python logging is as follows:
+
+```python
+import logging
+import time
+
+# Set up consistent logging.
+logging.basicConfig(
+    format="%(asctime)-15s %(levelname)s :: %(filename)s:%(lineno)s:%(funcName)s() :: %(message)s",  # noqa: E501
+    datefmt="%Y-%m-%d %H:%M:%S",
+    level="INFO",
+    handlers=[
+        logging.StreamHandler(),
+    ],
+)
+
+# Format logging using UTC time.
+logging.Formatter.converter = time.gmtime
+
+
+logger = logging.getLogger(__name__)
+```
+
+This logger does the following:
+
+- Provides a log time in UTC. This is consistent wherever the application is
+run.
+- Provides detail on the log-level, e.g. INFO, WARNING, ERROR.
+- Shares with the user the name of the source-code file where the log message is
+output.
+- The line number in the source code.
+- The function name where the log message is output.
+- The user controlled message.
+- Uses double colons as delineation if the message needs to be filtered in
+other ways using standard Linux tooling.
+
+Example output looks as follows:
+
+```log
+1970-01-01 00:01:55 ERROR :: log_demo.py:24:sum() :: summing '1' + '"1"' failed: unsupported operand type(s) for +: 'int' and 'str'
+```
+
+For more information on Python's logging see:
+
+- Logging [HOWTO][python-logging-howto].
+- Logging [module documentation][python-logging-module].
+
+
+[python-logging-howto]: https://docs.python.org/3/howto/logging.html
+[python-logging-module]: https://docs.python.org/3/library/logging.html
+
+#### Lower-case messages
+
+Log messages should start lower-case. If they start to run into more than one
+sentence, consider if the message is too complex, or if the function is
+modular enough. Additional separators, e.g. ` :: ` in the case above can be
+added for more complex lines, e.g. greater summary detail.
+
+#### Error-artefacts
+
+If the error artefact is available, then make sure to include it in the log
+message, e.g.
+
+```python
+def sum(a: int, b: str):
+   try:
+      a + b
+   except TypeError as err:
+      logger.error("summing '%s' + '\"%s\"' failed: %s", a, b, err)
+```
+
+#### Communicating with users
+
+Always keep in mind that logging is another communication with your users.
+
+Your users might include support colleagues, devops, external users, external
+support, and yourself. This means that logging should be professional, and
+meaningful.
+
+Ned Batchelder provides some useful tips about this: [here][ned-1]
+
+[ned-1]: https://nedbatchelder.com/text/log-style-guide.html
+
+As you make use of the application logs consider if they can be used for what
+they are intended for, or if key information is missing that would otherwise
+help an individual to debug a problem from the logs alone.
+
+#### Secrets
+
+Make sure that secrets are NEVER exposed through logging, e.g. when successfully
+decrypting a value provided by another user.
 ### Comments and communication
 
-Empathy driven development is a new development strategy promoting communication:
+Empathy driven development is a new development strategy promoting
+communication:
 
 - [What is empathy driven development][empathy-1] (warning, long article!).
 - [EmDD website][empathy-2].
@@ -155,7 +258,7 @@ way or another to this project:
 |------------------------------|---------------|-------------------------------------------------------------|---------------------------------------------------------------------------------------|
 | Responsibility-driven design | Object        | Improve encapsulation in object oriented systems.           | What actions is this object responsible for? What information does this object share? |
 | Test-driven development      | Test          | Reduce the risk of bugs and ship features faster.           | Red, Green, Refactor.                                                                 |
-| Domain-driven design         | Domain model  | Use the language of the  domain in the code-base.           | Bounded contexts. Ubiquoutous langauge.                                               |
+| Domain-driven design         | Domain model  | Use the language of the  domain in the code-base.           | Bounded contexts. Ubiquitous language.                                               |
 | Behavior-driven development  | Scenario      | Make acceptance tests executable and easy to execute.       | As a, I want, so that. Given, when, then.                                             |
 | Empathy-driven development   | Communication | Improve levels of trust and resilience in software systems. | Care, calm, consider, connect.                                                        |
 
@@ -180,7 +283,8 @@ it.
 
 We have many audiences. Even in the early days of a project, we have the
 developers, and then we have those selling or marketing the code. Those
-audiences shrink and grow over time with diminishing or increasing relevance, or greater push and pull.
+audiences shrink and grow over time with diminishing or increasing relevance, or
+greater push and pull.
 
 Communication for developers in the core of our code-base (code, commits, PRs)
 will often be `low-entropy`, including lots of acronyms and shortcuts to
