@@ -403,7 +403,18 @@ vcrpy to the test coverage`.
 Small or trivial commits need only use a title (50 chars max), e.g. `git commit
 -m "add your message here"` style.
 
-See Chris Beam's blog-post on this:
+> NB. If GNU's nano is configured as your default Git commit editor, it can help
+> to set the following in `/home/<user>/.nanorc` to see the column count:
+>
+>    ```text
+>    set constantshow
+>    ```
+>
+> Configuration of other editors to show column count will vary. If `.nanorc`
+> doesn't currently exist on your machine it can be created with just the
+> configuration above.
+
+See Chris Beam's blog-post for more on commit messages:
 [How to write a Git Commit Message][code-review-1] and their
 [Seven rules for good commit messages][code-review-2].
 
