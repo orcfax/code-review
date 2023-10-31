@@ -1,6 +1,9 @@
 {
     "editor.insertSpaces": true,
     "editor.tabSize": 4,
+    "editor.rulers": [
+        79
+    ],
     "editor.detectIndentation": false,
     "files.trimTrailingWhitespace": true,
     "files.insertFinalNewline": true,
@@ -9,17 +12,21 @@
     "[git-commit]": {
         "editor.rulers": [
             50,
-            72,
-        ]},
+            72
+        ]
+    },
     "[markdown]": {
-        "editor.rulers": [80],
+        "editor.rulers": [80]
     },
     "files.eol": "\n",
     "cSpell.words": [
+        "Cardano",
+        "Orcfax",
         "artefacts",
         "Batchelder",
         "gmtime",
         "HOWTO",
         "Mendix"
-    ],
+
+    ]
 }
