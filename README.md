@@ -82,7 +82,7 @@ values change, as such, Python's type-hints should be preferred.
 >   going to log it to stderr.
 >   """
 > ```
-
+>
 > ```python
 > def my_shorter_function_docstring(accumulative_value: int, new_value: int) -> int:
 >   """Adds two integers together."""
@@ -99,7 +99,7 @@ hasn't changed.
 - Reference style hyperlinks when links or line-lengths cannot be split.
 
 > *Example reference link:*
-
+>
 > ```markdown
 > More information can be found [here][more-info-1]
 >
@@ -152,6 +152,8 @@ logging for a specific product.
 
 A suggested configuration for Python logging is as follows:
 
+<!-- markdownlint-disable -->
+
 ```python
 import logging
 import time
@@ -173,6 +175,8 @@ logging.Formatter.converter = time.gmtime
 logger = logging.getLogger(__name__)
 ```
 
+<!-- markdownlint-enable -->
+
 This logger does the following:
 
 - Provides a log time in UTC. This is consistent wherever the application is
@@ -188,15 +192,18 @@ other ways using standard Linux tooling.
 
 Example output looks as follows:
 
+<!-- markdownlint-disable -->
+
 ```log
 1970-01-01 00:01:55 ERROR :: log_demo.py:24:sum() :: summing '1' + '"1"' failed: unsupported operand type(s) for +: 'int' and 'str'
 ```
+
+<!-- markdownlint-enable -->
 
 For more information on Python's logging see:
 
 - Logging [HOWTO][python-logging-howto].
 - Logging [module documentation][python-logging-module].
-
 
 [python-logging-howto]: https://docs.python.org/3/howto/logging.html
 [python-logging-module]: https://docs.python.org/3/library/logging.html
@@ -241,6 +248,7 @@ help an individual to debug a problem from the logs alone.
 
 Make sure that secrets are NEVER exposed through logging, e.g. when successfully
 decrypting a value provided by another user.
+
 ### Comments and communication
 
 Empathy driven development is a new development strategy promoting
@@ -255,6 +263,8 @@ that uses continuous communication to generate trust and resilience.
 It is placed alongside four other initiatives, all of which are important in one
 way or another to this project:
 
+<!-- markdownlint-disable -->
+
 | Methodology                  | Item of focus | Goal                                                        | Descriptive Process                                                                   |
 |------------------------------|---------------|-------------------------------------------------------------|---------------------------------------------------------------------------------------|
 | Responsibility-driven design | Object        | Improve encapsulation in object oriented systems.           | What actions is this object responsible for? What information does this object share? |
@@ -262,6 +272,8 @@ way or another to this project:
 | Domain-driven design         | Domain model  | Use the language of the  domain in the code-base.           | Bounded contexts. Ubiquitous language.                                               |
 | Behavior-driven development  | Scenario      | Make acceptance tests executable and easy to execute.       | As a, I want, so that. Given, when, then.                                             |
 | Empathy-driven development   | Communication | Improve levels of trust and resilience in software systems. | Care, calm, consider, connect.                                                        |
+
+<!-- markdownlint-enable -->
 
 If we consider all code eventually become legacy, we understand that we are
 communicating with empathy for each other, today; and we are communicating to an
@@ -331,7 +343,7 @@ where possible.
 >    else:
 >       return {"info": "not authenticated"}
 > ```
-
+>
 > *Example happy-path (trivial):*
 >
 > ```python
@@ -374,9 +386,9 @@ The primary difference is greater use of `try ... except` vs. `if ... then do
 >       return data["value"]
 >    return ""
 > ```
-
+>
 > *Example: Ask forgiveness:*
-
+>
 > ```python
 > def some_function(data: dict) -> str:
 >    """A brief example."""
@@ -396,7 +408,7 @@ Code commits are important communication artifacts. They communicate a lot to
 the person maintaining this code in five-years time. They are usually made up of
 a title and a body.
 
-- Title: 50 characteers max.
+- Title: 50 characters max.
 - Title style: imperative mode of the form (If applied, this commit will ) `Add
 vcrpy to the test coverage`.
 - Body: 72 characters line-length.
@@ -428,13 +440,13 @@ first or last change, and make them a single commit. As developers it requires
 more strategic thinking when writing code, but it makes finding issues in
 commits later easier, and is a bit easier to code-review, especially that of a
 trusted contributor.
-
+>
 > E.g. Refactoring is always tempting. We don't discuss refactoring here, but
 with good unit testing, it is something to be encouraged if something is found
 while writing features. A commit, refactoring a small portion of the code,
 should be kept separate from the problem solving part of the issue being looked
 at, for example, and should be well communicated in the commit and pull-request.
-
+>
 > NB. Practically, when refactoring, if a unit-test doesn't exist for something,
 the unit test should be created and committed first - then a second commit that
 represents the changes from refactoring.
@@ -466,14 +478,14 @@ for us, as they usually handle all the exceptions we would otherwise.
 - `pathlib`, ideal. More future-facing, object-oriented.
 
 > *Example using pathlib:*
-
+>
 > ```python
 > from pathlib import Path
 > my_path = Path("this/is/a/path")
 > my_path.mkdir(parents=True, exist_ok=True)
 > my_path.exists()
 > ```
-
+>
 > NB. While we normalize to use of the Linux separator `/` in our paths in this
 particular example, two `Path(...) / Path` instances can also be concatenated as
 such. Both examples instantiates a concrete path for the platform the code is
@@ -484,7 +496,7 @@ More on pathlib [here][pathlib-1] via Trey Hunner.
 - `os.path`-like functions, are okay too.
 
 > *Example using os.path:*
-
+>
 > ```python
 > from os import makedirs
 > from os import path
@@ -494,7 +506,7 @@ More on pathlib [here][pathlib-1] via Trey Hunner.
 > except FileExistsError:
 >    logging.info("path existS")
 > ```
-
+>
 > NB. Ideally we'll move toward `pathlib` but there's a learning curve, and it's
 not immediately obvious what benefits this object-orient style brings. We'll see
 libraries like `pytest` make good use of it for temporary directories and so
@@ -507,7 +519,7 @@ type errors without needing to `str(cast)`. They're really simple, and can
 include variables, as well as arbitrary expressions.
 
 > *Example f-string:*
-
+>
 > ```python
 > string_var = f"There are {len(my_list)} variables in: {my_list}}"
 > ```
@@ -528,7 +540,7 @@ tests 😉.
 
 #### Minimize the use of fixtures
 
-We have a lot of tools tha can help us to create files in-memory, as well as
+We have a lot of tools that can help us to create files in-memory, as well as
 work with databases, and other data structures in-memory too.
 
 For pytest, take a look at
