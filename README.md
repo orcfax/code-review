@@ -32,11 +32,12 @@
 
 ## Aim of this document
 
-The goal of this document is to bring a cycle of pull-requests -- code-review --
-merging into the Arkly API code-base. And begin to add this to our other
+The goal of this document is to bring a cycle of pull-requests -- code-review
+-- merging into the Project code-base. And begin to add this to our other
 production repositories.
 
-Another goal is to codify this for our other languages, be that JavaScript, Golang, Mendix, or anything else.
+Another goal is to codify this for our other languages, be that JavaScript,
+Golang, Mendix, or anything else.
 
 First we'll iterate on the thinking here, try it out, and when input is
 incorporated, and it makes sense, we'll try and standardize it.
